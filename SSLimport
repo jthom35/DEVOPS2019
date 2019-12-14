@@ -1,0 +1,11 @@
+#!/bin/sh
+      for HOST in $(cat Servers)
+
+       do
+          LogPath=/axphome/rnamburu/CAI-Logs/truststore.log_$HOST
+          echo $HOST
+          echo " =================================== "
+          ssh rnamburu@$HOST ./truststore-fetch.sh  2> /axphome/rnamburu/CAI-ErrorLog/login-error.log_$HOST
+
+          echo -e "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+       done

@@ -1,0 +1,55 @@
+Maven Build
+--------------
+Build automation using maven. 
+speed
+reliable
+accuracy
+
+
+Maven build , jenkins build and docker build are different concepts. 
+
+Maven Build
+--------------------
+input ---- process ---- output
+
+Input : Collection of programms
+Process : Occupying all programs and process it to single output
+Output : the single output file produced. We call it either build or artifacts.
+
+
+
+Java comes with three kinds of output build files. 
+jar --  used for stand alone projects
+war --- used for internet based projects.
+Enterprise  -- combination of jar and war files. 
+
+
+Life cycle of maven. 
+1. validate
+2. compile
+3. unit test cases script (UTC script. Maven create UTC script for automatic testing the dependencies and others )
+4. Execute UTC
+5. Package
+6. Install
+7. Deploy
+
+
+In maven, we create a list of dependencies called pom.xml
+Maven supports java and python mainly. 
+
+
+S: source (git hub, code commit)
+B: Build (Maven)
+D: Deploy (Tomcat)
+
+3 main webservers
+-------------------
+weblogic
+ibm websphere commerce
+tomcat 
+
+M2_HOME is maven home
+edit the environment variable to take this path	
+
+Jenkins will communicate with git, maven and tomcat to execute SBD
+Jenkins >> Manage jenkins >> 

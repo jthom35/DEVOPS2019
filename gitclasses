@@ -1,0 +1,24 @@
+ec2  - elastic computing cloud
+edge 
+
+
+Git Branch
+organised way to reach destination in git. will have more control, effortless.
+
+Git standards
+--------------
+Master is the default branch and main one. 
+branches create duplicate branches of master. 
+Never do any changes in master. Always do the changes in branches other than master, later merge to master. 
+
+
+Assignment.
+create a new branch, move to new branch,, see all files in master exists there. 
+create a new file, modify existing files
+
+
+Remote repository
+-----------------
+create an account in github.com 
+create a repository
+

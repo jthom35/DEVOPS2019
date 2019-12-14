@@ -1,0 +1,26 @@
+code commit is an aws product.
+competitor to github
+it works both on https and ssh protocol
+Normal root user of aws console account won't work for code commit. You get folowing error message when you try to create a repository 
+with root user. 
+"You are signed in using a root account. You cannot configure SSH connections for a root account, and HTTPS connections for
+ a root account are not recommended. Consider signing in as an IAM user and then setting up your connection."
+We need to create a non root user 
+Login to aws console >> Search for IAM >> Users >> Add User >> set permissions > Attach an existing policy > select AdministratorAccess
+ >> Once user is created you get a link like "https://416170126936.signin.aws.amazon.com/console" >> go to that URL >> search codecommit >>
+ create a repository >> click on repository >> @top right you see Clone url drop down >> select Connection steps >> select ssh >> select
+ windows >> 
+ Now create a ssh public and private key at your local machine at your home directory.
+ ssh-keygen -t rsa
+ it creates id_rsa and id_rsa.pub. Note down the path to both files
+ copy and paste the content of id_rsa.pub on following path
+ aws console >> login with non root user account >> search and select IAM >> select your non root user id >> select security credentials >>
+ create access key >> Note down ssh key id >> click on Upload public key >> copy and paste the content of id_rsa.pub file you just created 
+ in your local machine. 
+ Go back to step 12 and there you copy the following under "Edit local ssh configuration""
+ Host git-codecommit.*.amazonaws.com
+ User Your-IAM-SSH-Key-ID-Here (the id you copied from step 18)
+ IdentityFile ~/.ssh/Your-Private-Key-File-Name-Here
+ Now go to your local machine to your .ssh folder and create a file called config and paste the above three lines in it. 
+ Get the clone url from console
+go to your local machine and use command "git clone <clone url>

@@ -1,0 +1,86 @@
+#! /bin/bash
+##################################################
+##    import Amex Root CA on Linux Servers     ###
+##################################################
+
+echo `hostname`
+#locate kdb|grep -vi backup|grep kdb$|grep -i ihs|grep -v bin
+TrustList=(`locate trust.p12|grep -vi backup|grep /trust.p12$|grep -v rsatoken|grep -vi old|grep -vi restore|grep -vi ws-security|grep -vi lost|grep -vi wstemp`)
+KeyList=(`locate key.p12|grep -vi backup|grep /key.p12$|grep -v rsatoken|grep -vi old|grep -vi restore|grep -vi ws-security|grep -vi lost|grep -vi wstemp`)
+LogPath=/axphome/rnamburu/CAI-Logs/truststore.log_`hostname`
+export PATH=/opt/IBM/WebSphere/AppServer/java/jre/bin/:/opt/WebSphere/AppServer/java/jre/bin/:/opt/WebSphere7/AppServer/java/jre/bin/:/opt/IBM/WebSphere7/AppServer/java/jre/bin/:/opt/WebSphere7/AppServer/java/bin:/opt/IBM/WebSphere7/AppServer/java/bin:$PATH
+keytoolpath=`which keytool`
+echo -e "\033[38;5;148mTHE LIST OF TRUST STORES IN THIS SERVER\033[39m" >> ${LogPath}
+locate trust.p12|grep -vi backup|grep /trust.p12$|grep -v rsatoken|grep -vi old|grep -vi restore|grep -vi ws-security|grep -vi lost|grep -vi wstemp >> ${LogPath}
+echo -e "\033[38;5;148mTHE LIST OF KEY STORES IN THIS SERVER\033[39m" >> ${LogPath}
+
+locate key.p12|grep -vi backup|grep /key.p12$|grep -v rsatoken|grep -vi old|grep -vi restore|grep -vi ws-security|grep -vi lost|grep -vi wstemp >> ${LogPath}
+
+
+echo "********************************************************************************"
+echo "******************** Importing Root Cert into Trust Stores *********************"
+echo "********************************************************************************"
+        for TrustStore in "${TrustList[@]}"
+        do
+                echo "##################################################################################"
+                echo -e "\033[38;5;148mTaking backup of the file: " $TrustStore "\033[39m"
+                if [ -f "$TrustStore.script.backup.$HOSTNAME" ]; then
+                        echo "Original $TrustStore Back up file is exists"
+                else
+                        pbrun su - wsadmin "cp -rpf $TrustStore $TrustStore.script.backup.$HOSTNAME"
+                        echo -e "\033[38;5;148m####BackUp Completed########\033[39m"
+                fi
+                pbrun su - wsadmin "ls -la $TrustStore.script.backup.$HOSTNAME"
+                echo -e "\033[38;5;148mROOT CERT IS GOING TO BE INSTALLED IN $TrustStore\033[39m" >> ${LogPath}
+                echo "**************       Root cert installing ......   ********************************"
+                echo "***********************************************************************************"
+
+                pbrun su - wsadmin "$keytoolpath -import -file /axphome/rnamburu/AXPInternalRootCA.pem -keystore $TrustStore  -alias axpinternalrootca_nov2019 -storetype pkcs12 -storepass am3xk3y -noprompt" 2> /axphome/rnamburu/CAI-ErrorLog/login-error.log_`hostname`
+                echo "**************       Root cert installation done.. ********************************"
+                echo "***********************************************************************************"
+
+                echo -e "\033[38;5;148mLISTING THE ROOT CERTS IN $TrustStore \033[39m" >> ${LogPath}
+
+                echo "**************       Listing installed certs in log file  ......   ****************"
+                echo "***********************************************************************************"
+                pbrun su - wsadmin "$keytoolpath  -keystore $TrustStore  -storetype pkcs12 -storepass am3xk3y -list -v|grep -i axpinternalrootca_nov2019 -A 10 " >> ${LogPath}
+
+                echo "**************       Listing is done  ......   ************************************"
+                echo "***********************************************************************************"
+        done
+
+echo "********************************************************************************"
+echo "********************** Importing Root Cert into Key Stores *********************"
+echo "********************************************************************************"
+
+        for KeyStore in "${KeyList[@]}"
+        do
+                 echo "##################################################################################"
+                echo -e "\033[38;5;148mTaking backup of the file: " $KeyStore "\033[39m"
+                if [ -f "$KeyStore.script.backup.$HOSTNAME" ]; then
+                        echo "Original $KeyStore Back up file is exists"
+                else
+                        pbrun su - wsadmin "cp -rpf $KeyStore $KeyStore.script.backup.$HOSTNAME"
+                        echo -e "\033[38;5;148m####BackUp Completed########\033[39m"
+                fi
+
+                pbrun su - wsadmin "ls -la $KeyStore.script.backup.$HOSTNAME"
+
+                echo -e "\033[38;5;148mROOT CERT IS GOING TO BE INSTALLED IN $KeyStore\033[39m" >> ${LogPath}
+                echo "**************       Root cert installing ......   ********************************"
+                echo "***********************************************************************************"
+
+                pbrun su - wsadmin "$keytoolpath -import -file /axphome/rnamburu/AXPInternalRootCA.pem -keystore $KeyStore  -alias axpinternalrootca_nov2019 -storetype pkcs12 -storepass am3xk3y -noprompt" 2> /axphome/rnamburu/CAI-ErrorLog/login-error.log_`hostname`
+                echo "**************       Root cert installation done.. ********************************"
+                echo "***********************************************************************************"
+
+                echo -e "\033[38;5;148mLISTING THE ROOT CERTS IN $KeyStore \033[39m" >> ${LogPath}
+
+                echo "**************       Listing installed certs in log file  ......   ****************"
+                echo "***********************************************************************************"
+                pbrun su - wsadmin "$keytoolpath  -keystore $KeyStore  -storetype pkcs12 -storepass am3xk3y -list -v|grep -i axpinternalrootca_nov2019 -A 10 " >> ${LogPath}
+
+                echo "**************       Listing is done  ......   ************************************"
+                echo "***********************************************************************************"
+        done
+

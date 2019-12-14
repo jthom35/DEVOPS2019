@@ -1,0 +1,32 @@
+
+
+Item 
+job
+project
+build
+
+1. Dashboard >> Manage Jenkins >> Configure System >> GitHub Servre >> Advanced >> Override Hook URL >> check "specify another hook url""
+
+copy the hook url and update in the git hub repository
+goto github repository >> settings >> at the left paenl , select WebHooks >> add the url
+
+localhost address of webhook wont be taken. In that case open ngrok.exe
+
+a command line will come. 
+ngrok http 8080
+
+will give a url 
+copy it and paste in github settings
+
+Continous Delivery
+------------------
+GIT Scm polling for triggering changes in git
+PollSCM is another way of polling based on scheduling. 
+Scheduling
+supposed schedule every hour
+10 run
+11 (no change happened in git suppose. then pollscm contacts with git but wont trigger a run)
+11.15 (someone changed git but trigger wont happen. trigger happens only at 12)
+12 trigger run by pollscm
+
+Dashboard >> Manage Jenkins >> gLOBAL TOOL CONFIGURATION >>

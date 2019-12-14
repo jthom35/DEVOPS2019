@@ -1,0 +1,26 @@
+Git Tag
+
+1)	Create index.html with nil
+
+2)	Made commit 
+
+3)	Create git tag with version 0
+	git tag v0
+
+4)     Edit index.html with the following
+
+	<html>
+		<body>
+			<h1> Version 1 </h1>
+		</body>
+	</html>
+
+5)	Made commit
+
+6)	Create git tag with version 1
+
+7) 	Open the index.html file you get Version 1 output
+
+8)	git checkout version 0
+
+9)	Open the index.html file you get Version 0 output

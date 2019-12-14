@@ -1,0 +1,37 @@
+checksum - 40 digit algorithm used in git
+After commit, always head points to latest version
+GIT
+---
+git config --global user.name "Jimmy" ; This global setting is valid accross your local machine. Without this setting you cannot commit.
+git config --global user.email "jimmythomaschethelan@gmail.com"
+git add <filename> ; To add a file to staging
+git add * ; To add all files to staging
+git add *.log ; To add all files with log extension to staging
+git commit -m "message" ; To commit a file in staging. Only committed files can be moved to remote github repository.
+git status; will show the files that need to be moved to staging.
+git log; will show all committs with their heads towards latest commit
+git diff tools
+git difftool -y <head1> <head2>
+git branch ; shows the branches created and current branch you are in,will be starred. 
+git branch <branchname>; to create a new branch
+git checkout <branchname>;to checkout to another branch
+nb:once you checkout you can see all the contents from master in new branch also ...
+Merge a branch to master: 
+-----------------------
+git checkout master; First move to master branch.From there merge the required branch to master.
+git merge <branchname>
+Fork: Tool for copying another repository to our repository
+git remote add origin https://github.com/jthom35/Devops2019.git
+#set a new remote
+git remote -v
+#Verify new remote
+pushing a local commit to remote repository
+git push -u origin master
+
+git tag <version>
+git tag ; to see the available tagged versions
+git checkout <version1>
+
+
+
+
